@@ -24,11 +24,27 @@ def login_required(f):
     return decorated_function
 
 
+def admin_required(f):
+    """Decorator to require administrator access for protected routes."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Please log in as an administrator to access this page.', 'warning')
+            return redirect(url_for('auth.login'))
+        user = get_current_user()
+        if not user or not user.is_admin:
+            flash('Access denied. Administrator privileges required.', 'error')
+            return redirect(url_for('main.dashboard'))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 def get_current_user():
     """Get the currently logged-in user object."""
     if 'user_id' in session:
         return db.session.get(User, session['user_id'])
     return None
+
 
 
 def validate_email(email):
@@ -163,13 +179,21 @@ def login():
         flash('Invalid email or password.', 'error')
         return render_template('login.html', email=email)
 
+    # Update last login timestamp
+    from datetime import datetime, timezone
+    user.last_login = datetime.now(timezone.utc)
+    db.session.commit()
+
     # Create session
     session['user_id'] = user.id
     session['user_name'] = user.full_name
     session['user_email'] = user.email
+    session['is_admin'] = user.is_admin
     session.permanent = True
 
     flash(f'Welcome back, {user.full_name}!', 'success')
+    if user.is_admin:
+        return redirect(url_for('main.admin_dashboard'))
     return redirect(url_for('main.dashboard'))
 
 

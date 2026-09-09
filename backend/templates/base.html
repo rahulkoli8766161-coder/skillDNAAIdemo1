@@ -78,6 +78,13 @@
                         <i class="fa-solid fa-user-gear"></i> Profile
                     </a>
                 </li>
+                {% if session.get('is_admin') %}
+                <li>
+                    <a href="{{ url_for('main.admin_dashboard') }}" class="cyber-nav-link {% if request.endpoint == 'main.admin_dashboard' %}active{% endif %}" style="color: #00f0ff; border-left: 2px solid #00f0ff; padding-left: 0.5rem;">
+                        <i class="fa-solid fa-shield-halved text-cyan"></i> Admin Portal
+                    </a>
+                </li>
+                {% endif %}
             {% else %}
                 <li>
                     <a href="{{ url_for('main.index') }}" class="cyber-nav-link {% if request.endpoint == 'main.index' %}active{% endif %}">

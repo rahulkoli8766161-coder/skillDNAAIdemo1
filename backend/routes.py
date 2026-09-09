@@ -10,7 +10,7 @@ from flask import Blueprint, request, redirect, url_for, flash, render_template,
 from werkzeug.utils import secure_filename
 from database import db
 from models import User, UserProfile, Resume, Analysis, Roadmap
-from auth import login_required, get_current_user
+from auth import login_required, admin_required, get_current_user
 from resume_parser import parse_resume, allowed_file
 from ai_service import analyze_career
 
@@ -444,3 +444,184 @@ def settings():
         return redirect(url_for('main.settings'))
 
     return render_template('settings.html', user=user)
+
+
+# ============================================
+# ADMIN MANAGEMENT PORTAL
+# ============================================
+
+@main_bp.route('/admin')
+@admin_required
+def admin_dashboard():
+    """Admin Management Dashboard."""
+    users = User.query.order_by(User.id.desc()).all()
+    
+    total_users = len(users)
+    total_admins = sum(1 for u in users if u.is_admin)
+    total_analyses = Analysis.query.count()
+    total_resumes = Resume.query.count()
+    total_roadmaps = Roadmap.query.count()
+
+    # Domain field distribution
+    field_counts = {}
+    for u in users:
+        if u.profile and u.profile.current_field:
+            f = u.profile.current_field.strip().title()
+            field_counts[f] = field_counts.get(f, 0) + 1
+        else:
+            field_counts['Unspecified'] = field_counts.get('Unspecified', 0) + 1
+
+    return render_template('admin.html',
+                           users=users,
+                           total_users=total_users,
+                           total_admins=total_admins,
+                           total_analyses=total_analyses,
+                           total_resumes=total_resumes,
+                           total_roadmaps=total_roadmaps,
+                           field_counts=field_counts)
+
+
+@main_bp.route('/api/admin/analytics')
+@admin_required
+def admin_analytics():
+    """API endpoint for admin analytics graphs (logins, signups, fields)."""
+    from sqlalchemy import func
+    
+    users = User.query.all()
+    
+    # 1. Signups & Logins by date (last 7 days or all dates)
+    signup_dates = {}
+    login_dates = {}
+    
+    for u in users:
+        if u.created_at:
+            d_str = u.created_at.strftime('%Y-%m-%d')
+            signup_dates[d_str] = signup_dates.get(d_str, 0) + 1
+        if u.last_login:
+            d_str = u.last_login.strftime('%Y-%m-%d')
+            login_dates[d_str] = login_dates.get(d_str, 0) + 1
+
+    # Combine unique dates and sort
+    all_dates = sorted(list(set(signup_dates.keys()).union(set(login_dates.keys()))))
+    if not all_dates:
+        all_dates = [datetime.now(timezone.utc).strftime('%Y-%m-%d')]
+
+    signups_series = [signup_dates.get(d, 0) for d in all_dates]
+    logins_series = [login_dates.get(d, 0) for d in all_dates]
+
+    # 2. Career Fields breakdown
+    field_counts = {}
+    for u in users:
+        field = (u.profile.current_field.strip().title() if u.profile and u.profile.current_field else 'Technical Domain')
+        field_counts[field] = field_counts.get(field, 0) + 1
+
+    return {
+        'dates': all_dates,
+        'signups': signups_series,
+        'logins': logins_series,
+        'fields': list(field_counts.keys()),
+        'field_counts': list(field_counts.values())
+    }
+
+
+@main_bp.route('/admin/users/<int:user_id>/update', methods=['POST'])
+@admin_required
+def admin_update_user(user_id):
+    """Admin update user information and role."""
+    target_user = db.session.get(User, user_id)
+    if not target_user:
+        flash('User not found.', 'error')
+        return redirect(url_for('main.admin_dashboard'))
+
+    full_name = request.form.get('full_name', '').strip()
+    email = request.form.get('email', '').strip().lower()
+    education = request.form.get('education', '').strip()
+    current_field = request.form.get('current_field', '').strip()
+    is_admin = request.form.get('is_admin') == 'on' or request.form.get('is_admin') == '1' or request.form.get('is_admin') == 'true'
+
+    if not full_name or not email:
+        flash('Name and email are required.', 'error')
+        return redirect(url_for('main.admin_dashboard'))
+
+    # Check email conflict
+    existing = User.query.filter(User.email == email, User.id != user_id).first()
+    if existing:
+        flash('Another user with this email already exists.', 'error')
+        return redirect(url_for('main.admin_dashboard'))
+
+    try:
+        target_user.full_name = full_name
+        target_user.email = email
+        target_user.is_admin = is_admin
+
+        # Update or create user profile
+        if not target_user.profile:
+            profile = UserProfile(user_id=target_user.id, education=education, current_field=current_field)
+            db.session.add(profile)
+        else:
+            target_user.profile.education = education
+            target_user.profile.current_field = current_field
+
+        db.session.commit()
+        flash(f'User "{target_user.full_name}" updated successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        print(f'Admin update user error: {e}')
+        flash('Failed to update user details.', 'error')
+
+    return redirect(url_for('main.admin_dashboard'))
+
+
+@main_bp.route('/admin/users/<int:user_id>/toggle-admin', methods=['POST'])
+@admin_required
+def admin_toggle_role(user_id):
+    """Quickly toggle admin status for a user."""
+    current_admin_id = session.get('user_id')
+    if current_admin_id == user_id:
+        flash('You cannot change your own administrator status.', 'warning')
+        return redirect(url_for('main.admin_dashboard'))
+
+    target_user = db.session.get(User, user_id)
+    if not target_user:
+        flash('User not found.', 'error')
+        return redirect(url_for('main.admin_dashboard'))
+
+    try:
+        target_user.is_admin = not target_user.is_admin
+        db.session.commit()
+        role_label = "Administrator" if target_user.is_admin else "Standard User"
+        flash(f'User "{target_user.full_name}" role set to {role_label}.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        print(f'Toggle admin role error: {e}')
+        flash('Failed to update user role.', 'error')
+
+    return redirect(url_for('main.admin_dashboard'))
+
+
+@main_bp.route('/admin/users/<int:user_id>/delete', methods=['POST'])
+@admin_required
+def admin_delete_user(user_id):
+    """Delete a user and cascade remove all related records."""
+    current_admin_id = session.get('user_id')
+    if current_admin_id == user_id:
+        flash('You cannot delete your own logged-in admin account.', 'error')
+        return redirect(url_for('main.admin_dashboard'))
+
+    target_user = db.session.get(User, user_id)
+    if not target_user:
+        flash('User not found.', 'error')
+        return redirect(url_for('main.admin_dashboard'))
+
+    try:
+        user_name = target_user.full_name
+        db.session.delete(target_user)
+        db.session.commit()
+        flash(f'User "{user_name}" and all associated data deleted permanently.', 'success')
+    except Exception as e:
+        db.session.rollback()
+        print(f'Admin delete user error: {e}')
+        flash('Failed to delete user.', 'error')
+
+    return redirect(url_for('main.admin_dashboard'))
+
