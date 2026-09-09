@@ -1,5 +1,10 @@
 # SkillDNA-AI — INTECH AI Career Genome Analyzer
 
+🌐 **Live Web Tunnel Links:**
+- **Public App Link:** [https://skilldna-ai.loca.lt](https://skilldna-ai.loca.lt)
+- **GitHub Repository:** [https://github.com/rahulkoli8766161-coder/skillDNAAIdemo1](https://github.com/rahulkoli8766161-coder/skillDNAAIdemo1)
+- **Recommended Domain:** `skilldna.tech` / `skilldna.ai`
+
 An AI-powered career counseling web application that analyzes your resume, skills, education, and career goal to generate a personalized **Career Genome Report** with learning roadmap, skill gap analysis, and alternative career paths — powered by Google Gemini AI.
 
 ## Features
