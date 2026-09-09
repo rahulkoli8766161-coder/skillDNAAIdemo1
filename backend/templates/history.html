@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Analysis History — INTECH SkillDNA-AI{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <div style="margin-bottom: 2.5rem; text-align: center;">
+        <h1 class="title-glow text-gradient" style="font-size: 2.2rem; margin-bottom: 0.5rem;">
+            CAREER GENOME HISTORY LOGS
+        </h1>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            Review your past AI skill assessments, career goal benchmarks, and evolution metrics over time.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+        {% for item in analyses %}
+            <div class="cyber-cut-wrapper">
+                <div class="cyber-cut-inner" style="padding: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                        <div>
+                            <span style="font-family: var(--font-cyber); font-size: 0.8rem; color: var(--cyan-glow);">ASSESSMENT #{{ loop.index }}</span>
+                            <h3 style="font-size: 1.2rem; color: #ffffff; margin-top: 0.2rem;">{{ item.career_goal_analyzed }}</h3>
+                        </div>
+                        <div style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: var(--cyan-glow); background: rgba(0, 240, 255, 0.1); padding: 0.3rem 0.8rem; border-radius: 10px; border: 1px solid rgba(0, 240, 255, 0.25);">
+                            {{ item.career_recommendation.get('match_percentage', 85) }}%
+                        </div>
+                    </div>
+
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+                        <i class="fa-regular fa-calendar text-cyan"></i> Assessed on {{ item.analyzed_at.strftime('%B %d, %Y at %I:%M %p') }}
+                    </p>
+
+                    <div style="display: flex; gap: 0.8rem;">
+                        <a href="{{ url_for('main.analysis_result', analysis_id=item.id) }}" class="btn-cyber-cyan" style="padding: 0.4rem 1rem; font-size: 0.85rem; width: 100%;">
+                            <i class="fa-solid fa-file-lines"></i> Open Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="cyber-cut-wrapper" style="grid-column: 1 / -1;">
+                <div class="cyber-cut-inner" style="text-align: center; padding: 3rem;">
+                    <i class="fa-solid fa-clock-rotate-left text-cyan" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                    <h3 style="font-size: 1.3rem; color: #ffffff;">No History Logs Found</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Run your first AI Career Genome Analysis to begin recording history.</p>
+                    <a href="{{ url_for('main.dashboard') }}" class="btn-cyber-cyan">
+                        <i class="fa-solid fa-microscope"></i> Start Assessment
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+
+{% block title %}Personalized Roadmap — INTECH SkillDNA-AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <div style="margin-bottom: 2.5rem; text-align: center;">
+        <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 9999px; padding: 0.3rem 0.9rem; margin-bottom: 0.6rem;">
+            <i class="fa-solid fa-route text-cyan"></i>
+            <span style="font-family: var(--font-cyber); font-weight: 700; color: var(--cyan-glow); font-size: 0.85rem;">STEP-BY-STEP LEARNING PATHWAY</span>
+        </div>
+        <h1 class="title-glow text-gradient" style="font-size: 2.2rem; margin-bottom: 0.5rem;">
+            LEARNING ROADMAP FOR {{ analysis.career_goal_analyzed|upper }}
+        </h1>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            Estimated Duration: <span class="text-cyan" style="font-weight: 700;">{{ roadmap.estimated_duration if roadmap and roadmap.estimated_duration else '3 to 6 Months' }}</span>
+        </p>
+    </div>
+
+    <!-- Priorities Quick Banner -->
+    {% if roadmap and roadmap.priorities %}
+        <div class="cyber-cut-wrapper" style="margin-bottom: 2.5rem;">
+            <div class="cyber-cut-inner">
+                <h3 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 1rem; font-family: var(--font-cyber);">SKILL ACQUISITION PRIORITIES</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+                    <!-- High Priority -->
+                    <div style="background: rgba(255, 42, 109, 0.06); border: 1px solid rgba(255, 42, 109, 0.3); padding: 1rem; border-radius: 10px;">
+                        <span style="font-family: var(--font-cyber); font-weight: 700; color: var(--rose-glow); font-size: 0.85rem;">HIGH PRIORITY</span>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
+                            {% for item in roadmap.priorities.get('high', []) %}
+                                <span style="font-size: 0.8rem; background: rgba(255, 42, 109, 0.15); color: var(--rose-glow); padding: 0.2rem 0.6rem; border-radius: 9999px;">{{ item }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Medium Priority -->
+                    <div style="background: rgba(255, 183, 3, 0.06); border: 1px solid rgba(255, 183, 3, 0.3); padding: 1rem; border-radius: 10px;">
+                        <span style="font-family: var(--font-cyber); font-weight: 700; color: var(--amber-glow); font-size: 0.85rem;">MEDIUM PRIORITY</span>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
+                            {% for item in roadmap.priorities.get('medium', []) %}
+                                <span style="font-size: 0.8rem; background: rgba(255, 183, 3, 0.15); color: var(--amber-glow); padding: 0.2rem 0.6rem; border-radius: 9999px;">{{ item }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Low Priority -->
+                    <div style="background: rgba(0, 255, 136, 0.06); border: 1px solid rgba(0, 255, 136, 0.3); padding: 1rem; border-radius: 10px;">
+                        <span style="font-family: var(--font-cyber); font-weight: 700; color: var(--emerald-glow); font-size: 0.85rem;">OPTIONAL / ADVANCED</span>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem;">
+                            {% for item in roadmap.priorities.get('low', []) %}
+                                <span style="font-size: 0.8rem; background: rgba(0, 255, 136, 0.15); color: var(--emerald-glow); padding: 0.2rem 0.6rem; border-radius: 9999px;">{{ item }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Timeline Stages -->
+    <div style="position: relative; max-width: 900px; margin: 0 auto;">
+        <!-- Vertical Tech Connecting Line -->
+        <div style="position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--cyan-glow), var(--blue-electric), transparent); opacity: 0.4; z-index: 0;"></div>
+
+        {% if roadmap and roadmap.stages %}
+            {% for stage in roadmap.stages %}
+                <div class="cyber-cut-wrapper" style="margin-bottom: 2rem; margin-left: 3.5rem; position: relative; z-index: 1;">
+                    <!-- Timeline Node Icon -->
+                    <div style="position: absolute; left: -4rem; top: 1.5rem; width: 44px; height: 44px; border-radius: 50%; background: #030509; border: 2px solid var(--cyan-glow); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 800; color: var(--cyan-glow); box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);">
+                        {{ loop.index }}
+                    </div>
+
+                    <div class="cyber-cut-inner">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem; border-bottom: 1px solid var(--border-cyber-subtle); padding-bottom: 0.6rem;">
+                            <h3 style="font-size: 1.3rem; color: #ffffff;">
+                                {{ stage.get('title', 'Phase ' ~ loop.index) }}
+                            </h3>
+                            <span style="font-family: var(--font-cyber); font-weight: 700; color: var(--cyan-glow); font-size: 0.85rem; background: rgba(0, 240, 255, 0.1); padding: 0.2rem 0.7rem; border-radius: 9999px; border: 1px solid rgba(0, 240, 255, 0.3);">
+                                <i class="fa-regular fa-clock"></i> {{ stage.get('duration', '2-4 Weeks') }}
+                            </span>
+                        </div>
+
+                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.2rem;">
+                            {{ stage.get('description', 'Focus on acquiring foundational concepts and practical coding drills.') }}
+                        </p>
+
+                        <!-- Skills Covered -->
+                        {% if stage.get('skills') %}
+                            <div style="margin-bottom: 1rem;">
+                                <span style="font-size: 0.8rem; color: var(--text-dim); font-family: var(--font-cyber);">SKILLS COVERED</span>
+                                <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.3rem;">
+                                    {% for skill in stage.get('skills', []) %}
+                                        <span style="font-size: 0.8rem; padding: 0.2rem 0.6rem; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 9999px; color: var(--cyan-glow);">
+                                            {{ skill }}
+                                        </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Key Milestone Project -->
+                        {% if stage.get('projects') %}
+                            <div style="background: rgba(0, 240, 255, 0.04); border-left: 3px solid var(--cyan-glow); padding: 0.8rem 1rem; border-radius: 0 8px 8px 0;">
+                                <span style="font-size: 0.8rem; color: var(--cyan-glow); font-family: var(--font-cyber); font-weight: 700;">PHASE MILESTONE PROJECT</span>
+                                <p style="font-size: 0.9rem; color: #ffffff; margin-top: 0.2rem;">
+                                    {% if stage.get('projects') is string %}{{ stage.get('projects') }}{% else %}{{ stage.get('projects') | join(', ') }}{% endif %}
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="cyber-cut-wrapper" style="margin-left: 3.5rem;">
+                <div class="cyber-cut-inner" style="text-align: center; padding: 3rem;">
+                    <i class="fa-solid fa-route text-cyan" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <h3 style="font-size: 1.3rem; color: #ffffff;">No Roadmap Generated Yet</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Run an AI Analysis to automatically generate your tailored learning roadmap.</p>
+                    <a href="{{ url_for('main.dashboard') }}" class="btn-cyber-cyan">
+                        <i class="fa-solid fa-microscope"></i> Go to Dashboard
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/roadmap.js') }}"></script>
+{% endblock %}

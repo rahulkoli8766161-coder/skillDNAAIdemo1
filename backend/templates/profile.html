@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile Setup — INTECH SkillDNA-AI{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <!-- Header -->
+    <div style="margin-bottom: 2.5rem; text-align: center;">
+        <h1 class="title-glow text-gradient" style="font-size: 2.2rem; margin-bottom: 0.5rem;">
+            CAREER GENOME PROFILE SETUP
+        </h1>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            Input your technical skills, career targets, background details, and upload your resume to enable precise AI skill-gap & roadmap analysis.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 2rem;">
+        <!-- Left: Profile Form -->
+        <div class="cyber-cut-wrapper">
+            <div class="cyber-cut-inner">
+                <h3 style="font-size: 1.3rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-cyber-subtle); padding-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;">
+                    <i class="fa-solid fa-id-card text-cyan"></i> Professional Attributes
+                </h3>
+
+                <form action="{{ url_for('main.profile') }}" method="POST" id="profile-form">
+                    <!-- Career Goal -->
+                    <div class="form-group-cyber">
+                        <label for="career_goal" class="form-label-cyber">Target Career Goal <span class="text-cyan">*</span></label>
+                        <input 
+                            type="text" 
+                            id="career_goal" 
+                            name="career_goal" 
+                            class="input-cyber-pill" 
+                            placeholder="e.g. AI Engineer, Full-Stack Developer, Data Scientist"
+                            value="{{ profile.career_goal if profile and profile.career_goal else '' }}"
+                            required
+                        >
+                    </div>
+
+                    <!-- Current Field -->
+                    <div class="form-group-cyber">
+                        <label for="current_field" class="form-label-cyber">Current Field / Discipline</label>
+                        <input 
+                            type="text" 
+                            id="current_field" 
+                            name="current_field" 
+                            class="input-cyber-pill" 
+                            placeholder="e.g. Computer Science Student, Junior Web Developer"
+                            value="{{ profile.current_field if profile and profile.current_field else '' }}"
+                        >
+                    </div>
+
+                    <!-- Education -->
+                    <div class="form-group-cyber">
+                        <label for="education" class="form-label-cyber">Highest Education / Background</label>
+                        <input 
+                            type="text" 
+                            id="education" 
+                            name="education" 
+                            class="input-cyber-pill" 
+                            placeholder="e.g. B.Tech Computer Science, Self-Taught Programmer"
+                            value="{{ profile.education if profile and profile.education else '' }}"
+                        >
+                    </div>
+
+                    <!-- Experience level -->
+                    <div class="form-group-cyber">
+                        <label for="experience" class="form-label-cyber">Experience Level</label>
+                        <input 
+                            type="text" 
+                            id="experience" 
+                            name="experience" 
+                            class="input-cyber-pill" 
+                            placeholder="e.g. Entry-level, 1-2 years, Fresher"
+                            value="{{ profile.experience if profile and profile.experience else '' }}"
+                        >
+                    </div>
+
+                    <!-- Dynamic Skill Tags -->
+                    <div class="form-group-cyber">
+                        <label class="form-label-cyber">Technical Skills (Type and press Enter)</label>
+                        <div style="display: flex; gap: 0.5rem; margin-bottom: 0.8rem;">
+                            <input 
+                                type="text" 
+                                id="skill-input" 
+                                class="input-cyber-pill" 
+                                placeholder="Add a skill (e.g. Python, React, PyTorch)"
+                            >
+                            <button type="button" id="add-skill-btn" class="btn-cyber-outline" style="padding: 0.85rem 1.2rem; flex-shrink: 0;">
+                                <i class="fa-solid fa-plus"></i> Add
+                            </button>
+                        </div>
+
+                        <!-- Skill Tags Container -->
+                        <div id="skills-container" style="display: flex; flex-wrap: wrap; gap: 0.5rem; min-height: 40px; padding: 0.8rem; background: rgba(13, 22, 42, 0.4); border: 1px solid var(--border-cyber-subtle); border-radius: 12px;">
+                            {% if profile and profile.skills %}
+                                {% for skill in profile.skills %}
+                                    <span class="skill-pill-tag">
+                                        {{ skill }}
+                                        <i class="fa-solid fa-xmark remove-skill-tag" data-skill="{{ skill }}"></i>
+                                    </span>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <input type="hidden" name="skills" id="hidden-skills-input" value="{{ profile.skills | tojson if profile and profile.skills else '[]' }}">
+                    </div>
+
+                    <div style="margin-top: 2rem;">
+                        <button type="submit" class="btn-cyber-cyan" style="width: 100%;">
+                            <i class="fa-solid fa-floppy-disk"></i> Save Genome Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right: Resume Drag and Drop Upload -->
+        <div>
+            <div class="cyber-cut-wrapper">
+                <div class="cyber-cut-inner">
+                    <h3 style="font-size: 1.2rem; margin-bottom: 1.2rem; border-bottom: 1px solid var(--border-cyber-subtle); padding-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;">
+                        <i class="fa-solid fa-file-pdf text-cyan"></i> Resume Analysis
+                    </h3>
+
+                    <form action="{{ url_for('main.upload_resume') }}" method="POST" enctype="multipart/form-data" id="resume-form">
+                        <!-- Dropzone Area -->
+                        <div id="resume-dropzone" style="border: 2px dashed var(--border-cyber); border-radius: 16px; padding: 2.5rem 1rem; text-align: center; background: rgba(0, 240, 255, 0.03); cursor: pointer; transition: all var(--transition-fast);">
+                            <i class="fa-solid fa-cloud-arrow-up text-cyan" style="font-size: 2.8rem; margin-bottom: 1rem;"></i>
+                            <h4 style="font-size: 1.1rem; color: #ffffff; margin-bottom: 0.4rem;">Drag & Drop Resume Here</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Supports PDF, DOCX, or TXT (Max 5MB)</p>
+                            
+                            <label for="resume" class="btn-cyber-outline" style="font-size: 0.85rem; padding: 0.4rem 1rem; cursor: pointer;">
+                                Browse Files
+                            </label>
+                            <input type="file" id="resume" name="resume" accept=".pdf,.docx,.txt" style="display: none;" required>
+                            
+                            <div id="file-name-display" style="margin-top: 1rem; font-family: var(--font-cyber); font-size: 0.9rem; color: var(--emerald-glow); display: none;"></div>
+                        </div>
+
+                        <div style="margin-top: 1.5rem;">
+                            <button type="submit" class="btn-cyber-white" style="font-size: 0.95rem;">
+                                <i class="fa-solid fa-upload"></i> Upload & Extract Resume
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Latest Upload Record -->
+                    {% set latest_resume = user.resumes.first() %}
+                    {% if latest_resume %}
+                        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-cyber-subtle);">
+                            <span style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-cyber);">ACTIVE RESUME</span>
+                            <div style="display: flex; align-items: center; gap: 0.6rem; margin-top: 0.4rem; color: var(--emerald-glow); font-family: var(--font-cyber); font-size: 0.95rem;">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>{{ latest_resume.filename }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!-- Instant Analysis Trigger Card on Profile Page -->
+                    <div style="margin-top: 1.5rem; padding: 1.2rem; background: rgba(0, 240, 255, 0.05); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 12px; text-align: center;">
+                        <span style="font-family: var(--font-cyber); font-size: 0.8rem; color: var(--cyan-glow); display: block; margin-bottom: 0.3rem;">READY TO ASSESS</span>
+                        <h4 style="font-size: 1rem; color: #ffffff; margin-bottom: 0.8rem;">Evaluate Profile & Resume</h4>
+                        <form action="{{ url_for('main.analyze') }}" method="POST" id="profile-analyze-form">
+                            <button type="submit" class="btn-cyber-cyan" style="width: 100%; font-size: 0.9rem; justify-content: center;">
+                                <i class="fa-solid fa-microscope"></i> Run Career Genome Analysis
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

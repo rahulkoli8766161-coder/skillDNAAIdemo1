@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Interview Prep — INTECH SkillDNA-AI{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <div style="margin-bottom: 2.5rem; text-align: center;">
+        <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 9999px; padding: 0.3rem 0.9rem; margin-bottom: 0.6rem;">
+            <i class="fa-solid fa-comments text-cyan"></i>
+            <span style="font-family: var(--font-cyber); font-weight: 700; color: var(--cyan-glow); font-size: 0.85rem;">TECHNICAL & BEHAVIORAL INTERVIEW PREP</span>
+        </div>
+        <h1 class="title-glow text-gradient" style="font-size: 2.2rem; margin-bottom: 0.5rem;">
+            INTERVIEW Q&A PREPARATION HUB
+        </h1>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            Master core technical questions and system design scenarios customized for <span class="text-cyan" style="font-weight: 600;">{{ profile.career_goal if profile and profile.career_goal else 'your career goal' }}</span>.
+        </p>
+    </div>
+
+    <!-- Question Cards Accordion -->
+    <div style="display: flex; flex-direction: column; gap: 1.2rem; max-width: 900px; margin: 0 auto 2.5rem auto;">
+        <!-- Q1 -->
+        <div class="cyber-cut-wrapper">
+            <div class="cyber-cut-inner" style="padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const ans = this.nextElementSibling; ans.style.display = ans.style.display === 'block' ? 'none' : 'block';">
+                    <h3 style="font-size: 1.15rem; color: #ffffff; display: flex; align-items: center; gap: 0.6rem;">
+                        <i class="fa-solid fa-circle-question text-cyan"></i>
+                        <span>How do you handle scaling & optimization in high-concurrency systems?</span>
+                    </h3>
+                    <i class="fa-solid fa-chevron-down text-cyan"></i>
+                </div>
+                <div style="display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-cyber-subtle); color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+                    <p style="margin-bottom: 0.6rem;"><strong style="color: var(--cyan-glow);">Model Answer Strategy:</strong></p>
+                    <p>Explain caching strategies (Redis/Memcached), asynchronous queue workers (Celery/RabbitMQ), database indexing & read-replicas, load balancing, and microservices decoupling.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="cyber-cut-wrapper">
+            <div class="cyber-cut-inner" style="padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const ans = this.nextElementSibling; ans.style.display = ans.style.display === 'block' ? 'none' : 'block';">
+                    <h3 style="font-size: 1.15rem; color: #ffffff; display: flex; align-items: center; gap: 0.6rem;">
+                        <i class="fa-solid fa-circle-question text-cyan"></i>
+                        <span>What is your methodology for debugging complex production failures?</span>
+                    </h3>
+                    <i class="fa-solid fa-chevron-down text-cyan"></i>
+                </div>
+                <div style="display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-cyber-subtle); color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+                    <p style="margin-bottom: 0.6rem;"><strong style="color: var(--cyan-glow);">Model Answer Strategy:</strong></p>
+                    <p>Demonstrate structured diagnostic thinking: check centralized APM metrics & stack trace logs, reproduce minimal test cases, isolate state mutations, inspect upstream dependencies, write patch unit tests, and deploy post-mortem prevention.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="cyber-cut-wrapper">
+            <div class="cyber-cut-inner" style="padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const ans = this.nextElementSibling; ans.style.display = ans.style.display === 'block' ? 'none' : 'block';">
+                    <h3 style="font-size: 1.15rem; color: #ffffff; display: flex; align-items: center; gap: 0.6rem;">
+                        <i class="fa-solid fa-circle-question text-cyan"></i>
+                        <span>Explain the difference between Monolithic vs Microservices Architecture.</span>
+                    </h3>
+                    <i class="fa-solid fa-chevron-down text-cyan"></i>
+                </div>
+                <div style="display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-cyber-subtle); color: var(--text-muted); font-size: 0.92rem; line-height: 1.6;">
+                    <p style="margin-bottom: 0.6rem;"><strong style="color: var(--cyan-glow);">Model Answer Strategy:</strong></p>
+                    <p>Monoliths offer single-codebase deployment simplicity, lower operational overhead, and easy ACID transactions. Microservices offer independent service scaling, technological flexibility, and domain isolation at the cost of distributed networking complexity.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

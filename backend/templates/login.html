@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block title %}Login — INTECH SkillDNA-AI{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-page-wrapper">
+    <div class="auth-card-outer">
+        <!-- Chamfered Cyber Cut Card matching reference image -->
+        <div class="cyber-cut-wrapper">
+            <div class="cyber-cut-inner">
+                <!-- Side Metallic Cyber Fin Tabs (Left & Right) -->
+                <div class="side-fin left-top"></div>
+                <div class="side-fin left-mid"></div>
+                <div class="side-fin left-bot"></div>
+                <div class="side-fin right-bot-1"></div>
+                <div class="side-fin right-bot-2"></div>
+                <div class="side-fin right-bot-3"></div>
+
+                <!-- Brand Header -->
+                <div class="auth-brand-logo">
+                    <span>INTECH</span>
+                </div>
+
+                <div class="auth-heading-area">
+                    <h2>Login with</h2>
+                    <p>Access your personalized AI career genome analyzer and learning roadmap profile.</p>
+                </div>
+
+                <!-- Option Pills (Ref: Image Option 1 & Option 2) -->
+                <div class="option-tabs-group">
+                    <button type="button" class="option-tab-btn active">
+                        <i class="fa-solid fa-code-fork"></i> Option 1
+                    </button>
+                    <button type="button" class="option-tab-btn">
+                        <i class="fa-solid fa-code-branch"></i> Option 2
+                    </button>
+                </div>
+
+                <div class="cyber-divider"></div>
+
+                <!-- Login Form -->
+                <form action="{{ url_for('auth.login') }}" method="POST" class="auth-form-body">
+                    <!-- Email Field -->
+                    <div class="form-group-cyber">
+                        <label for="email" class="form-label-cyber">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="input-cyber-pill" 
+                            placeholder="Enter your email"
+                            value="{{ email if email else '' }}" 
+                            required 
+                            autocomplete="email"
+                        >
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group-cyber">
+                        <label for="password" class="form-label-cyber">Password</label>
+                        <div class="input-with-icon">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                class="input-cyber-pill" 
+                                placeholder="Enter your password" 
+                                required
+                            >
+                            <i class="fa-regular fa-eye field-icon toggle-password"></i>
+                        </div>
+                    </div>
+
+                    <!-- White Pill Submit Button (Ref: Image) -->
+                    <div style="margin-top: 2rem;">
+                        <button type="submit" class="btn-cyber-white">
+                            <span>Login</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Auth Footer Link -->
+                <div class="auth-bottom-link">
+                    <p>Don't have an account? <a href="{{ url_for('auth.register') }}" class="text-cyan">Register here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}

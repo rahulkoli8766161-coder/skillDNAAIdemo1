@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Portfolio Projects Hub — INTECH SkillDNA-AI{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <div style="margin-bottom: 2.5rem; text-align: center;">
+        <div style="display: inline-flex; align-items: center; gap: 0.4rem; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 9999px; padding: 0.3rem 0.9rem; margin-bottom: 0.6rem;">
+            <i class="fa-solid fa-code-commit text-cyan"></i>
+            <span style="font-family: var(--font-cyber); font-weight: 700; color: var(--cyan-glow); font-size: 0.85rem;">PORTFOLIO BUILDER</span>
+        </div>
+        <h1 class="title-glow text-gradient" style="font-size: 2.2rem; margin-bottom: 0.5rem;">
+            RECOMMENDED HANDS-ON PROJECTS
+        </h1>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            Build resume-worthy real-world projects designed to demonstrate your target skills to recruiters.
+        </p>
+    </div>
+
+    <!-- Projects Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.8rem; margin-bottom: 2.5rem;">
+        {% if projects %}
+            {% for proj in projects %}
+                <div class="cyber-cut-wrapper">
+                    <div class="cyber-cut-inner" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
+                                <span style="font-family: var(--font-cyber); font-weight: 700; color: var(--cyan-glow); font-size: 0.85rem; background: rgba(0, 240, 255, 0.1); padding: 0.2rem 0.6rem; border-radius: 9999px; border: 1px solid rgba(0, 240, 255, 0.25);">
+                                    <i class="fa-solid fa-code-branch"></i> PROJECT #{{ loop.index }}
+                                </span>
+                                <span style="font-size: 0.75rem; font-family: var(--font-cyber); color: var(--emerald-glow); background: rgba(0, 255, 136, 0.1); padding: 0.2rem 0.6rem; border-radius: 9999px; border: 1px solid rgba(0, 255, 136, 0.3);">
+                                    {% if proj is mapping %}{{ proj.get('difficulty', 'Intermediate') }}{% else %}Intermediate{% endif %}
+                                </span>
+                            </div>
+
+                            <h3 style="font-size: 1.25rem; color: #ffffff; margin-bottom: 0.5rem;">
+                                {% if proj is mapping %}{{ proj.get('title', 'Portfolio Project') }}{% else %}{{ proj }}{% endif %}
+                            </h3>
+
+                            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.2rem;">
+                                {% if proj is mapping %}{{ proj.get('description', 'Build a production-grade application showcasing end-to-end technical execution.') }}{% else %}Build a production-grade application showcasing end-to-end technical execution.{% endif %}
+                            </p>
+
+                            {% if proj is mapping and proj.get('skills_used') %}
+                                <div style="margin-bottom: 1.2rem;">
+                                    <span style="font-size: 0.75rem; color: var(--text-dim); font-family: var(--font-cyber); display: block; margin-bottom: 0.3rem;">TECH STACK</span>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                                        {% for skill in proj.get('skills_used', []) %}
+                                            <span style="font-size: 0.78rem; padding: 0.2rem 0.5rem; background: rgba(13, 22, 42, 0.8); border: 1px solid var(--border-cyber-subtle); border-radius: 6px; color: var(--cyan-glow);">
+                                                {{ skill }}
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div style="display: flex; gap: 0.8rem; margin-top: 1rem; border-top: 1px solid var(--border-cyber-subtle); padding-top: 1rem;">
+                            <button type="button" class="btn-cyber-cyan" style="padding: 0.4rem 1rem; font-size: 0.85rem; flex: 1;" onclick="alert('Project guide starter code copied to clipboard!')">
+                                <i class="fa-solid fa-rocket"></i> Start Project
+                            </button>
+                            <button type="button" class="btn-cyber-outline" style="padding: 0.4rem 1rem; font-size: 0.85rem;" onclick="this.classList.toggle('active'); this.innerHTML = this.classList.contains('active') ? '<i class=\"fa-solid fa-check text-cyan\"></i> Saved' : '<i class=\"fa-regular fa-bookmark\"></i> Bookmark';">
+                                <i class="fa-regular fa-bookmark"></i> Bookmark
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <!-- Demo fallback project cards -->
+            <div class="cyber-cut-wrapper">
+                <div class="cyber-cut-inner">
+                    <h3 style="font-size: 1.2rem; color: #ffffff; margin-bottom: 0.5rem;">AI Career Genome Analyzer (Full-Stack)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Build a full-stack Flask/React app with AI skill gap analysis and interactive charts.</p>
+                    <button type="button" class="btn-cyber-cyan" style="width: 100%; font-size: 0.85rem;" onclick="alert('Project guide loaded!')">
+                        <i class="fa-solid fa-rocket"></i> Start Project Guide
+                    </button>
+                </div>
+            </div>
+            <div class="cyber-cut-wrapper">
+                <div class="cyber-cut-inner">
+                    <h3 style="font-size: 1.2rem; color: #ffffff; margin-bottom: 0.5rem;">Cloud Microservices API Gateway</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Architect a Dockerized microservices suite with JWT auth and rate limiting.</p>
+                    <button type="button" class="btn-cyber-cyan" style="width: 100%; font-size: 0.85rem;" onclick="alert('Project guide loaded!')">
+                        <i class="fa-solid fa-rocket"></i> Start Project Guide
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

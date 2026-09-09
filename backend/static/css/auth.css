@@ -1,0 +1,95 @@
+/* ============================================
+   SkillDNA-AI — Authentication Page Styles
+   Register & Login Cyber Glassmorphism
+   ============================================ */
+
+.auth-page-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 180px);
+    padding: 2rem 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-card-outer {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.auth-brand-logo {
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.auth-brand-logo span {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #ffffff;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.auth-heading-area {
+    margin-bottom: 1.8rem;
+}
+
+.auth-heading-area h2 {
+    font-family: var(--font-body);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+
+.auth-heading-area p {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.cyber-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 240, 255, 0.3), transparent);
+    margin: 1.5rem 0 2rem 0;
+}
+
+.auth-bottom-link {
+    text-align: center;
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--border-cyber-subtle);
+    font-family: var(--font-cyber);
+    font-size: 0.95rem;
+}
+
+.auth-bottom-link a {
+    font-weight: 700;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+}
+
+.auth-bottom-link a:hover {
+    text-shadow: 0 0 10px var(--cyan-glow);
+}
+
+/* Register specific password strength */
+.strength-meter {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+    display: flex;
+}
+
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}

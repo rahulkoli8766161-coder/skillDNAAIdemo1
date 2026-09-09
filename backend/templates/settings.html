@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Account Settings — INTECH SkillDNA-AI{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <div style="margin-bottom: 2.5rem; text-align: center;">
+        <h1 class="title-glow text-gradient" style="font-size: 2.2rem; margin-bottom: 0.5rem;">
+            ACCOUNT & SECURITY SETTINGS
+        </h1>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            Manage security credentials, data export preferences, and session configurations.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1000px; margin: 0 auto 2.5rem auto;">
+        <!-- Security Form -->
+        <div class="cyber-cut-wrapper">
+            <div class="cyber-cut-inner">
+                <h3 style="font-size: 1.2rem; color: #ffffff; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-cyber-subtle); padding-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;">
+                    <i class="fa-solid fa-key text-cyan"></i> Security & Password
+                </h3>
+
+                <form action="{{ url_for('main.settings') }}" method="POST">
+                    <input type="hidden" name="action" value="change_password">
+
+                    <div class="form-group-cyber">
+                        <label for="current_password" class="form-label-cyber">Current Password</label>
+                        <div class="input-with-icon">
+                            <input type="password" id="current_password" name="current_password" class="input-cyber-pill" placeholder="Enter current password" required>
+                            <i class="fa-regular fa-eye field-icon toggle-password"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group-cyber">
+                        <label for="new_password" class="form-label-cyber">New Password</label>
+                        <div class="input-with-icon">
+                            <input type="password" id="new_password" name="new_password" class="input-cyber-pill" placeholder="Enter new password" required>
+                            <i class="fa-regular fa-eye field-icon toggle-password"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group-cyber">
+                        <label for="confirm_password" class="form-label-cyber">Confirm New Password</label>
+                        <div class="input-with-icon">
+                            <input type="password" id="confirm_password" name="confirm_password" class="input-cyber-pill" placeholder="Confirm new password" required>
+                            <i class="fa-regular fa-eye field-icon toggle-password"></i>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.8rem;">
+                        <button type="submit" class="btn-cyber-cyan" style="width: 100%;">
+                            <i class="fa-solid fa-shield-halved"></i> Update Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Data & Preferences -->
+        <div class="cyber-cut-wrapper">
+            <div class="cyber-cut-inner">
+                <h3 style="font-size: 1.2rem; color: #ffffff; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-cyber-subtle); padding-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;">
+                    <i class="fa-solid fa-sliders text-cyan"></i> Data & System Preferences
+                </h3>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <span style="font-size: 0.8rem; color: var(--text-dim); font-family: var(--font-cyber); display: block; margin-bottom: 0.4rem;">EXPORT PROFILE DATA</span>
+                    <button type="button" class="btn-cyber-outline" style="width: 100%; text-align: center;" onclick="alert('Exporting your SkillDNA Profile Data as JSON...')">
+                        <i class="fa-solid fa-download"></i> Download Profile JSON
+                    </button>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <span style="font-size: 0.8rem; color: var(--text-dim); font-family: var(--font-cyber); display: block; margin-bottom: 0.4rem;">CYBER CANVAS ANIMATION</span>
+                    <button type="button" class="btn-cyber-outline" style="width: 100%; text-align: center;" onclick="const c = document.getElementById('cyber-canvas'); if(c) { c.style.display = c.style.display === 'none' ? 'block' : 'none'; this.innerText = c.style.display === 'none' ? 'Enable Energy Canvas' : 'Disable Energy Canvas'; }">
+                        Toggle Energy Canvas
+                    </button>
+                </div>
+
+                <div style="padding-top: 1rem; border-top: 1px solid var(--border-cyber-subtle);">
+                    <span style="font-size: 0.8rem; color: var(--rose-glow); font-family: var(--font-cyber); display: block; margin-bottom: 0.4rem;">ACCOUNT SESSION</span>
+                    <a href="{{ url_for('auth.logout') }}" class="btn-cyber-outline" style="width: 100%; text-align: center; color: var(--rose-glow); border-color: rgba(255, 42, 109, 0.4);">
+                        <i class="fa-solid fa-power-off"></i> Terminate Session (Logout)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

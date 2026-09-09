@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Career Recommendations — INTECH SkillDNA-AI{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <div style="margin-bottom: 2.5rem; text-align: center;">
+        <h1 class="title-glow text-gradient" style="font-size: 2.2rem; margin-bottom: 0.5rem;">
+            CAREER PATHWAYS & ALTERNATIVES
+        </h1>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+            AI-driven market alignment for <span class="text-cyan" style="font-weight: 600;">{{ analysis.career_goal_analyzed }}</span> and alternative high-demand roles matching your skill genome.
+        </p>
+    </div>
+
+    <!-- Primary Career Match Card -->
+    <div class="cyber-cut-wrapper" style="margin-bottom: 2.5rem;">
+        <div class="cyber-cut-inner">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-cyber-subtle); padding-bottom: 1rem;">
+                <div>
+                    <span style="font-family: var(--font-cyber); font-size: 0.85rem; color: var(--cyan-glow);">PRIMARY CAREER BENCHMARK</span>
+                    <h2 style="font-size: 1.8rem; color: #ffffff; margin-top: 0.2rem;">{{ analysis.career_goal_analyzed }}</h2>
+                </div>
+                <div style="font-family: var(--font-heading); font-size: 2rem; font-weight: 900; color: var(--cyan-glow); background: rgba(0, 240, 255, 0.1); padding: 0.5rem 1.2rem; border-radius: 14px; border: 1px solid rgba(0, 240, 255, 0.3);">
+                    {{ analysis.career_recommendation.get('match_percentage', 85) }}% Match
+                </div>
+            </div>
+
+            <p style="color: var(--text-muted); line-height: 1.7; font-size: 1rem; margin-bottom: 1.5rem;">
+                {{ analysis.career_recommendation.get('summary', 'This role offers strong long-term career growth, high market demand, and aligns directly with your technical capabilities.') }}
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div style="background: rgba(13, 22, 42, 0.6); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-cyber-subtle);">
+                    <span style="font-size: 0.8rem; color: var(--text-dim); font-family: var(--font-cyber);">MARKET DEMAND</span>
+                    <p style="font-weight: 700; color: var(--emerald-glow); font-size: 1.1rem; margin-top: 0.2rem;">High / Expanding</p>
+                </div>
+                <div style="background: rgba(13, 22, 42, 0.6); padding: 1rem; border-radius: 10px; border: 1px solid var(--border-cyber-subtle);">
+                    <span style="font-size: 0.8rem; color: var(--text-dim); font-family: var(--font-cyber);">ESTIMATED TRANSITION TIME</span>
+                    <p style="font-weight: 700; color: var(--cyan-glow); font-size: 1.1rem; margin-top: 0.2rem;">
+                        {{ analysis.roadmap.estimated_duration if analysis.roadmap else '3-6 Months' }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alternative Careers Section -->
+    <h3 style="font-size: 1.4rem; color: #ffffff; margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.6rem;">
+        <i class="fa-solid fa-code-branch text-cyan"></i> Alternative Career Opportunities
+    </h3>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+        {% for alt in analysis.alternative_careers %}
+            <div class="cyber-cut-wrapper">
+                <div class="cyber-cut-inner" style="padding: 1.5rem;">
+                    <h4 style="font-size: 1.2rem; color: var(--cyan-glow); margin-bottom: 0.5rem;">
+                        {% if alt is mapping %}{{ alt.get('title', 'Alternative Role') }}{% else %}{{ alt }}{% endif %}
+                    </h4>
+                    <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">
+                        {% if alt is mapping %}{{ alt.get('reason', 'High skill transferability from your current profile.') }}{% else %}Strong alternative career path requiring minor skill overlap adjustments.{% endif %}
+                    </p>
+                    <a href="{{ url_for('main.roadmap') }}" class="btn-cyber-outline" style="padding: 0.35rem 0.8rem; font-size: 0.8rem;">
+                        Explore Pathway <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <div style="color: var(--text-muted);">No alternative careers calculated.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

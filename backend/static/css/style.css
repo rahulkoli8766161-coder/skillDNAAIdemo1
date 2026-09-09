@@ -1,0 +1,885 @@
+/* ============================================
+   SkillDNA-AI — Cyber Futuristic Design System
+   High-Tech Dark Mode, Glassmorphism, Energy Shard Background,
+   Chamfered Cyber Cards & Glowing Elements
+   ============================================ */
+
+/* ---- Google Fonts Import ---- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap');
+
+/* ============================================
+   CSS Custom Properties (Design Tokens)
+   ============================================ */
+:root {
+    /* Color Palette */
+    --bg-black: #030509;
+    --bg-dark-void: #060913;
+    --bg-card-glass: rgba(8, 15, 30, 0.72);
+    --bg-card-solid: #09101f;
+    --bg-input: rgba(13, 22, 42, 0.65);
+    --bg-input-focus: rgba(18, 30, 58, 0.85);
+
+    /* Neon Accents */
+    --cyan-glow: #00f0ff;
+    --cyan-dim: #00b4d8;
+    --blue-electric: #0077ff;
+    --blue-deep: #0a2540;
+    --purple-glow: #8a2be2;
+    --emerald-glow: #00ff88;
+    --rose-glow: #ff2a6d;
+    --amber-glow: #ffb703;
+
+    /* Text Colors */
+    --text-main: #f0f4fc;
+    --text-muted: #8a99ad;
+    --text-dim: #5c6b73;
+    --text-cyan: #00f0ff;
+
+    /* Borders & Glass */
+    --border-cyber: rgba(0, 240, 255, 0.25);
+    --border-cyber-subtle: rgba(0, 240, 255, 0.12);
+    --border-glow: rgba(0, 240, 255, 0.6);
+    --glass-blur: blur(20px);
+    --glass-shadow: 0 15px 40px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+
+    /* Fonts */
+    --font-heading: 'Orbitron', sans-serif;
+    --font-cyber: 'Rajdhani', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    /* Transitions */
+    --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-medium: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-glow: 0.5s ease;
+}
+
+/* ============================================
+   Reset & Core Layout
+   ============================================ */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--bg-black);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+}
+
+/* ============================================
+   Futuristic Dynamic Background (Neural Constellation)
+   ============================================ */
+.cyber-bg-container {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 40%, #0a1628 0%, #050a15 40%, #030509 80%);
+}
+
+#cyber-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+}
+
+/* Ambient Energy Shards Layer (behind canvas) */
+.cyber-shards-bg {
+    position: absolute;
+    inset: -10%;
+    width: 120%;
+    height: 120%;
+    background-image: 
+        radial-gradient(ellipse at 30% 20%, rgba(0, 119, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(138, 43, 226, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
+    filter: blur(60px);
+    opacity: 0.7;
+    animation: pulseShards 12s ease-in-out infinite alternate;
+}
+
+@keyframes pulseShards {
+    0% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.02); }
+    100% { opacity: 0.6; transform: scale(0.98); }
+}
+
+/* Subtle Tech Grid Lines */
+.cyber-grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.018) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.5;
+    mask-image: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.6) 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.6) 0%, transparent 75%);
+}
+
+/* ============================================
+   Typography Utilities
+   ============================================ */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: 0.05em;
+    color: var(--text-main);
+}
+
+.title-glow {
+    text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+}
+
+.text-cyan {
+    color: var(--cyan-glow) !important;
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, #ffffff 0%, var(--cyan-glow) 50%, var(--blue-electric) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ============================================
+   Cyber Cut Glass Container (Ref: User Image)
+   ============================================ */
+.cyber-card {
+    position: relative;
+    background: var(--bg-card-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-cyber-subtle);
+    box-shadow: var(--glass-shadow);
+    transition: all var(--transition-medium);
+}
+
+/* Chamfered Polygonal Cut Style (as seen in image) */
+.cyber-cut-panel {
+    position: relative;
+    background: var(--bg-card-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    clip-path: polygon(
+        0% 0%, 
+        calc(100% - 60px) 0%, 
+        100% 60px, 
+        100% 100%, 
+        60px 100%, 
+        0% calc(100% - 60px)
+    );
+    border: 1px solid var(--border-cyber);
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.15), inset 0 0 20px rgba(0, 119, 255, 0.1);
+    padding: 3rem 2.5rem;
+}
+
+/* Outer Border Simulation for Clip-Path Elements */
+.cyber-cut-wrapper {
+    position: relative;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(0, 240, 255, 0.6), rgba(0, 119, 255, 0.2), rgba(0, 240, 255, 0.4));
+    clip-path: polygon(
+        0% 0%, 
+        calc(100% - 60px) 0%, 
+        100% 60px, 
+        100% 100%, 
+        60px 100%, 
+        0% calc(100% - 60px)
+    );
+    transition: box-shadow var(--transition-medium);
+}
+
+.cyber-cut-wrapper:hover {
+    box-shadow: 0 0 35px rgba(0, 240, 255, 0.15);
+}
+
+.cyber-cut-wrapper .cyber-cut-inner {
+    background: rgba(6, 11, 24, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 3rem 2.5rem;
+}
+
+/* Side Metallic Fin Tabs (Matching side tabs in reference image) */
+.side-fin {
+    position: absolute;
+    width: 14px;
+    background: linear-gradient(180deg, rgba(0, 240, 255, 0.4), rgba(0, 119, 255, 0.2));
+    border: 1px solid var(--cyan-glow);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+}
+
+.side-fin.left-top {
+    left: -16px;
+    top: 60px;
+    height: 40px;
+    clip-path: polygon(0 0, 100% 20%, 100% 80%, 0 100%);
+}
+
+.side-fin.left-mid {
+    left: -16px;
+    top: 110px;
+    height: 40px;
+    clip-path: polygon(0 0, 100% 20%, 100% 80%, 0 100%);
+}
+
+.side-fin.left-bot {
+    left: -16px;
+    top: 160px;
+    height: 40px;
+    clip-path: polygon(0 0, 100% 20%, 100% 80%, 0 100%);
+}
+
+.side-fin.right-bot-1 {
+    right: -16px;
+    bottom: 160px;
+    height: 35px;
+    clip-path: polygon(100% 0, 0 20%, 0 80%, 100% 100%);
+}
+
+.side-fin.right-bot-2 {
+    right: -16px;
+    bottom: 110px;
+    height: 35px;
+    clip-path: polygon(100% 0, 0 20%, 0 80%, 100% 100%);
+}
+
+.side-fin.right-bot-3 {
+    right: -16px;
+    bottom: 60px;
+    height: 35px;
+    clip-path: polygon(100% 0, 0 20%, 0 80%, 100% 100%);
+}
+
+/* ============================================
+   Option Tabs & Form Controls (Ref: Image)
+   ============================================ */
+.option-tabs-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.option-tab-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    background: rgba(13, 22, 42, 0.5);
+    border: 1px solid rgba(0, 240, 255, 0.25);
+    color: var(--text-main);
+    font-family: var(--font-cyber);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.option-tab-btn:hover, .option-tab-btn.active {
+    background: rgba(0, 240, 255, 0.12);
+    border-color: var(--cyan-glow);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+    color: var(--cyan-glow);
+}
+
+.option-tab-btn i {
+    font-size: 1.1rem;
+    color: var(--cyan-glow);
+}
+
+/* Capsule Form Inputs (Ref: Image) */
+.form-group-cyber {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-label-cyber {
+    display: block;
+    font-family: var(--font-cyber);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.03em;
+}
+
+.input-cyber-pill {
+    width: 100%;
+    padding: 0.85rem 1.5rem;
+    background: rgba(15, 27, 52, 0.6);
+    border: 1px solid rgba(0, 240, 255, 0.18);
+    border-radius: 9999px;
+    color: var(--text-main);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: all var(--transition-fast);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.input-cyber-pill::placeholder {
+    color: rgba(138, 153, 173, 0.5);
+}
+
+.input-cyber-pill:focus {
+    border-color: var(--cyan-glow);
+    background: rgba(20, 36, 68, 0.85);
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.25), inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Textarea variant */
+textarea.input-cyber-pill {
+    border-radius: 16px;
+    resize: vertical;
+    min-height: 100px;
+}
+
+select.input-cyber-pill {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300f0ff' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.2rem center;
+    padding-right: 3rem;
+}
+
+/* Input with Right Icon (Ref: Password Eye icon in Image) */
+.input-with-icon {
+    position: relative;
+}
+
+.input-with-icon .input-cyber-pill {
+    padding-right: 3rem;
+}
+
+.input-with-icon .field-icon {
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color var(--transition-fast);
+}
+
+.input-with-icon .field-icon:hover {
+    color: var(--cyan-glow);
+}
+
+/* High-Contrast Pill Buttons (Ref: White "Login" Button in Image) */
+.btn-cyber-white {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.9rem 2rem;
+    background: #ffffff;
+    color: #030509;
+    border: none;
+    border-radius: 9999px;
+    font-family: var(--font-cyber);
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+}
+
+.btn-cyber-white:hover {
+    background: var(--cyan-glow);
+    color: #030509;
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.7);
+    transform: translateY(-2px);
+}
+
+.btn-cyber-cyan {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.8rem;
+    background: linear-gradient(135deg, var(--cyan-glow) 0%, var(--blue-electric) 100%);
+    color: #030509;
+    border: none;
+    border-radius: 9999px;
+    font-family: var(--font-cyber);
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+    text-decoration: none;
+}
+
+.btn-cyber-cyan:hover {
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
+    transform: translateY(-2px);
+}
+
+.btn-cyber-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.6rem;
+    background: transparent;
+    border: 1px solid var(--cyan-glow);
+    border-radius: 9999px;
+    color: var(--cyan-glow);
+    font-family: var(--font-cyber);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.btn-cyber-outline:hover {
+    background: rgba(0, 240, 255, 0.15);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+}
+
+/* ============================================
+   Priority Badges (Analysis Report)
+   ============================================ */
+.priority-badge {
+    font-family: var(--font-cyber);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    letter-spacing: 0.03em;
+}
+
+.priority-badge.high {
+    background: rgba(255, 42, 109, 0.15);
+    color: var(--rose-glow);
+    border: 1px solid rgba(255, 42, 109, 0.3);
+}
+
+.priority-badge.medium {
+    background: rgba(255, 183, 3, 0.15);
+    color: var(--amber-glow);
+    border: 1px solid rgba(255, 183, 3, 0.3);
+}
+
+.priority-badge.low {
+    background: rgba(0, 255, 136, 0.15);
+    color: var(--emerald-glow);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+/* ============================================
+   Cyber Navbar
+   ============================================ */
+.cyber-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1rem 2rem;
+    background: rgba(3, 5, 9, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border-cyber-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cyber-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-decoration: none;
+    letter-spacing: 0.1em;
+}
+
+.cyber-brand i {
+    color: var(--cyan-glow);
+    font-size: 1.5rem;
+    filter: drop-shadow(0 0 8px var(--cyan-glow));
+}
+
+.cyber-nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    list-style: none;
+}
+
+.cyber-nav-link {
+    font-family: var(--font-cyber);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    position: relative;
+}
+
+.cyber-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--cyan-glow);
+    border-radius: 1px;
+    transition: all var(--transition-fast);
+    transform: translateX(-50%);
+    box-shadow: 0 0 8px var(--cyan-glow);
+}
+
+.cyber-nav-link:hover::after, .cyber-nav-link.active::after {
+    width: 70%;
+}
+
+.cyber-nav-link:hover, .cyber-nav-link.active {
+    color: var(--cyan-glow);
+    background: rgba(0, 240, 255, 0.08);
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+}
+
+/* Mobile Hamburger */
+.cyber-nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    padding: 6px;
+    border: none;
+    background: none;
+}
+
+.cyber-nav-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--cyan-glow);
+    border-radius: 1px;
+    transition: all 0.3s ease;
+}
+
+/* Navbar User Section */
+.cyber-nav-user {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-badge {
+    font-family: var(--font-cyber);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0, 240, 255, 0.08);
+    padding: 0.35rem 0.9rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    transition: all var(--transition-fast);
+}
+
+.user-badge:hover {
+    border-color: var(--cyan-glow);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+}
+
+/* ============================================
+   Flash Messages Banner
+   ============================================ */
+.flash-cyber-container {
+    position: fixed;
+    top: 80px;
+    right: 2rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 400px;
+}
+
+.flash-cyber-card {
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.flash-cyber-card.success {
+    background: rgba(0, 255, 136, 0.12);
+    border: 1px solid rgba(0, 255, 136, 0.4);
+    color: var(--emerald-glow);
+}
+
+.flash-cyber-card.error {
+    background: rgba(255, 42, 109, 0.12);
+    border: 1px solid rgba(255, 42, 109, 0.4);
+    color: var(--rose-glow);
+}
+
+.flash-cyber-card.warning {
+    background: rgba(255, 183, 3, 0.12);
+    border: 1px solid rgba(255, 183, 3, 0.4);
+    color: var(--amber-glow);
+}
+
+.flash-cyber-card.info {
+    background: rgba(0, 240, 255, 0.12);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    color: var(--cyan-glow);
+}
+
+/* ============================================
+   Page Wrappers & Container
+   ============================================ */
+.main-wrapper {
+    padding-top: 100px;
+    padding-bottom: 4rem;
+    min-height: calc(100vh - 100px);
+    animation: pageEnter 0.6s ease;
+}
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cyber-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Cyber Footer */
+.cyber-footer {
+    border-top: 1px solid var(--border-cyber-subtle);
+    padding: 2rem 0;
+    text-align: center;
+    font-family: var(--font-cyber);
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    background: rgba(3, 5, 9, 0.92);
+    position: relative;
+}
+
+.cyber-footer span {
+    color: var(--cyan-glow);
+}
+
+/* ============================================
+   Loading Overlay (DNA Analysis Spinner)
+   ============================================ */
+#loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(3, 5, 9, 0.92);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+#loading-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.dna-spinner {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem auto;
+}
+
+.dna-helix {
+    position: absolute;
+    inset: 0;
+    border: 3px solid transparent;
+    border-top-color: var(--cyan-glow);
+    border-right-color: var(--blue-electric);
+    border-radius: 50%;
+    animation: spinHelix 1.2s linear infinite;
+}
+
+.dna-helix.delay {
+    inset: 8px;
+    border-top-color: var(--purple-glow);
+    border-right-color: var(--cyan-glow);
+    animation-direction: reverse;
+    animation-duration: 1.6s;
+}
+
+@keyframes spinHelix {
+    to { transform: rotate(360deg); }
+}
+
+.loading-text {
+    font-family: var(--font-cyber);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--cyan-glow);
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+}
+
+.loading-progress {
+    width: 200px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 9999px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.loading-bar {
+    height: 100%;
+    width: 40%;
+    background: linear-gradient(90deg, var(--cyan-glow), var(--blue-electric), var(--purple-glow));
+    border-radius: 9999px;
+    animation: loadingSlide 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingSlide {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(350%); }
+}
+
+/* ============================================
+   Scrollbar Styling
+   ============================================ */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-black);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 240, 255, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 240, 255, 0.4);
+}
+
+/* ============================================
+   Selection Styling
+   ============================================ */
+::selection {
+    background: rgba(0, 240, 255, 0.3);
+    color: #ffffff;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media (max-width: 1024px) {
+    .cyber-nav-menu {
+        gap: 0.8rem;
+    }
+
+    .cyber-nav-link {
+        font-size: 0.9rem;
+        padding: 0.35rem 0.6rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .cyber-navbar {
+        padding: 0.8rem 1rem;
+        flex-wrap: wrap;
+    }
+
+    .cyber-nav-toggle {
+        display: flex;
+    }
+
+    .cyber-nav-menu {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-top: 1rem;
+        order: 3;
+    }
+
+    .cyber-nav-menu.mobile-open {
+        display: flex;
+        animation: slideIn 0.3s ease;
+    }
+
+    .cyber-nav-user {
+        order: 2;
+    }
+
+    .cyber-cut-panel, .cyber-cut-wrapper .cyber-cut-inner {
+        padding: 2rem 1.25rem;
+    }
+
+    .side-fin {
+        display: none;
+    }
+}

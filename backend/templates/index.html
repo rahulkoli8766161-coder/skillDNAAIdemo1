@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}INTECH SkillDNA-AI — AI Career Genome Analyzer{% endblock %}
+
+{% block content %}
+<div class="cyber-container">
+    <!-- Hero Section -->
+    <div style="text-align: center; padding: 4rem 1rem 3rem 1rem; position: relative;">
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(0, 240, 255, 0.08); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 9999px; padding: 0.4rem 1.2rem; margin-bottom: 1.5rem;">
+            <i class="fa-solid fa-atom text-cyan"></i>
+            <span style="font-family: var(--font-cyber); font-weight: 700; color: var(--cyan-glow); letter-spacing: 0.05em; font-size: 0.9rem;">NEXT-GEN CAREER GENOME INTELLIGENCE</span>
+        </div>
+
+        <h1 style="font-size: 3.2rem; font-weight: 900; line-height: 1.2; margin-bottom: 1.2rem;" class="text-gradient title-glow">
+            DISCOVER YOUR CAREER DNA.<br>ANALYZE YOUR FUTURE.
+        </h1>
+
+        <p style="max-width: 680px; margin: 0 auto 2.5rem auto; color: var(--text-muted); font-size: 1.1rem; line-height: 1.7;">
+            SkillDNA-AI utilizes advanced Artificial Intelligence to analyze your technical skills, educational background, and resume to map out your personalized career genome, skill gaps, and step-by-step learning roadmap.
+        </p>
+
+        <div style="display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('auth.register') }}" class="btn-cyber-cyan">
+                <i class="fa-solid fa-bolt"></i> Analyze Your DNA Now
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="btn-cyber-outline">
+                <i class="fa-solid fa-right-to-bracket"></i> Account Login
+            </a>
+        </div>
+    </div>
+
+    <!-- Feature Grid with Cyber Cut Cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 3rem;">
+        <!-- Card 1 -->
+        <div class="cyber-cut-wrapper">
+            <div class="cyber-cut-inner" style="padding: 2.2rem 1.8rem;">
+                <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(0, 240, 255, 0.12); border: 1px solid var(--cyan-glow); display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem;">
+                    <i class="fa-solid fa-dna text-cyan" style="font-size: 1.5rem;"></i>
+                </div>
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.6rem; color: #ffffff;">Skill Genome Mapping</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">Parse resume data and profile traits to quantify your core domain strengths, technical proficiencies, and missing competencies.</p>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="cyber-cut-wrapper">
+            <div class="cyber-cut-inner" style="padding: 2.2rem 1.8rem;">
+                <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(0, 119, 255, 0.12); border: 1px solid var(--blue-electric); display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem;">
+                    <i class="fa-solid fa-bullseye text-cyan" style="font-size: 1.5rem;"></i>
+                </div>
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.6rem; color: #ffffff;">AI Skill-Gap Analysis</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">Identify exact skill gaps standing between your current role and your dream career benchmark with instant AI scoring.</p>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="cyber-cut-wrapper">
+            <div class="cyber-cut-inner" style="padding: 2.2rem 1.8rem;">
+                <div style="width: 50px; height: 50px; border-radius: 12px; background: rgba(138, 43, 226, 0.12); border: 1px solid var(--purple-glow); display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem;">
+                    <i class="fa-solid fa-route text-cyan" style="font-size: 1.5rem;"></i>
+                </div>
+                <h3 style="font-size: 1.3rem; margin-bottom: 0.6rem; color: #ffffff;">Personalized Roadmap</h3>
+                <p style="color: var(--text-muted); font-size: 0.92rem;">Receive structured learning phases, prioritized skill recommendations, and real-world project suggestions to build your portfolio.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
