@@ -172,8 +172,8 @@ def login():
         flash('Please enter both email and password.', 'error')
         return render_template('login.html', email=email)
 
-    # Find user by email
-    user = User.query.filter_by(email=email).first()
+    # Find user by email or username (full_name)
+    user = User.query.filter((User.email == email) | (User.full_name == email)).first()
 
     if not user or not check_password_hash(user.password_hash, password):
         flash('Invalid email or password.', 'error')
